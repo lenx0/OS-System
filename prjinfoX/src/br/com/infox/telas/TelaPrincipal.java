@@ -7,6 +7,7 @@ package br.com.infox.telas;
 
 import java.text.DateFormat;
 import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -117,6 +118,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         MenOpcSai.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_DOWN_MASK));
         MenOpcSai.setText("Sair");
+        MenOpcSai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenOpcSaiActionPerformed(evt);
+            }
+        });
         MenOpc.add(MenOpcSai);
 
         Menu.add(MenOpc);
@@ -177,6 +183,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         DateFormat formatador = DateFormat.getDateInstance(DateFormat.SHORT);
         lblData.setText(formatador.format(data));
     }//GEN-LAST:event_formWindowActivated
+
+    private void MenOpcSaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenOpcSaiActionPerformed
+        // exibe uma caixa de diálogo
+        int sair = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja sair?","Atenção",JOptionPane.YES_NO_OPTION);
+        if(sair == JOptionPane.YES_OPTION){
+            System.exit(0);//encerra o sistema
+        }
+    }//GEN-LAST:event_MenOpcSaiActionPerformed
 
     /**
      * @param args the command line arguments
