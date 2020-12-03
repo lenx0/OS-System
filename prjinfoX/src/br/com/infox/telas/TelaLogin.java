@@ -31,10 +31,13 @@ public class TelaLogin extends javax.swing.JFrame {
             pst.setString(2, txtSenha.getText());
             //a linha abaixo executaa query(consulta)
             rs = pst.executeQuery();
-            //se existir usuário e senha correspondente
+            //se existir usuário e senha correspondente.
             if (rs.next()) {//se a consulta der positivo
                 TelaPrincipal principal = new TelaPrincipal();
                 principal.setVisible(true);
+                this.dispose();//garante que formulário tela de login feche ao abrir a tela principal
+                conexao.close();//fecha a conexão com o banco de dados depois de conferir login e senha
+             
 
             } else {
                 JOptionPane.showMessageDialog(null, "usuário e/ou senha inválido(s)");
