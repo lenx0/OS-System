@@ -7,6 +7,7 @@ package br.com.infox.telas;
 
 import java.sql.*;
 import br.com.infox.dal.ModuloConexao;
+import java.awt.Color;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,13 +16,14 @@ import javax.swing.JOptionPane;
  */
 public class TelaLogin extends javax.swing.JFrame {
 
+    TelaPrincipal principal = new TelaPrincipal();
     Connection conexao = null;
 // variaveis que serão usadas para atualizar as tabelas do banco
     PreparedStatement pst = null;
     ResultSet rs = null;
 
     public void logar() {
-        TelaPrincipal principal = new TelaPrincipal();
+
         String sql = "select * from tbusuarios where login=? and senha =?";//? será substituido pelo usuario e senha digitado na tela
         try {
             //as linhas abaixo preparam a consulta de login e senha ao banco de 
@@ -40,14 +42,17 @@ public class TelaLogin extends javax.swing.JFrame {
                 if (perfil.equals("admin")) {
 
                     //se a consulta der positivo
-                    
                     principal.setVisible(true);
                     TelaPrincipal.MenRel.setEnabled(true);// o campo que estava desabilitado será habilidado
                     TelaPrincipal.MenCadUsu.setEnabled(true);
+                    TelaPrincipal.lblUsuario.setText(rs.getString(2));//busca no banco nome do usuario que está logado e exibe na tela 2 é o campo usuário no banco
+                    TelaPrincipal.lblUsuario.setForeground(Color.red);//fonte do usuario é vermelho na tela principal caso for admin
                     this.dispose();//garante que formulário tela de login feche ao abrir a tela principal
                     conexao.close();//fecha a conexão com o banco de dados depois de conferir login e senha
-                }else{
+                } else {
                     principal.setVisible(true);
+                    TelaPrincipal.lblUsuario.setText(rs.getString(2));
+                    TelaPrincipal.lblUsuario.setForeground(Color.blue);
                     this.dispose();
                     conexao.close();
                 }
