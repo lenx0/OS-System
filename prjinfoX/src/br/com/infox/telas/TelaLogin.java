@@ -21,6 +21,7 @@ public class TelaLogin extends javax.swing.JFrame {
     ResultSet rs = null;
 
     public void logar() {
+        TelaPrincipal principal = new TelaPrincipal();
         String sql = "select * from tbusuarios where login=? and senha =?";//? será substituido pelo usuario e senha digitado na tela
         try {
             //as linhas abaixo preparam a consulta de login e senha ao banco de 
@@ -32,12 +33,24 @@ public class TelaLogin extends javax.swing.JFrame {
             //a linha abaixo executaa query(consulta)
             rs = pst.executeQuery();
             //se existir usuário e senha correspondente.
-            if (rs.next()) {//se a consulta der positivo
-                TelaPrincipal principal = new TelaPrincipal();
-                principal.setVisible(true);
-                this.dispose();//garante que formulário tela de login feche ao abrir a tela principal
-                conexao.close();//fecha a conexão com o banco de dados depois de conferir login e senha
-             
+            if (rs.next()) {
+                // a linha abaixo obtem o conteúdo do campo perfil da tabela tbusuarios
+                String perfil = rs.getString(6);//campo 6 da tabela, no caso perfil
+                // a estrutura abaixo faz o tratamento do perfil do usuário, quando vamos comparar string, temos que usar equals e nao ==.
+                if (perfil.equals("admin")) {
+
+                    //se a consulta der positivo
+                    
+                    principal.setVisible(true);
+                    TelaPrincipal.MenRel.setEnabled(true);// o campo que estava desabilitado será habilidado
+                    TelaPrincipal.MenCadUsu.setEnabled(true);
+                    this.dispose();//garante que formulário tela de login feche ao abrir a tela principal
+                    conexao.close();//fecha a conexão com o banco de dados depois de conferir login e senha
+                }else{
+                    principal.setVisible(true);
+                    this.dispose();
+                    conexao.close();
+                }
 
             } else {
                 JOptionPane.showMessageDialog(null, "usuário e/ou senha inválido(s)");
