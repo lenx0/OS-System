@@ -93,6 +93,9 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         txtCliFone.setText(tblClientes.getModel().getValueAt(setar, 3).toString());
         txtCliEmail.setText(tblClientes.getModel().getValueAt(setar, 4).toString());
         
+        //a linha abaixo desabilita o botão adicionar
+        btnAdicionar.setEnabled(false);
+        
         
 
     }
@@ -119,6 +122,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                     txtCliFone.setText(null);
                     txtCliEmail.setText(null);
                     txtCliId.setText(null);
+                    btnAdicionar.setEnabled(true);
                    
 
                 }
