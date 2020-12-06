@@ -5,17 +5,112 @@
  */
 package br.com.infox.telas;
 
+import java.sql.*;
+import br.com.infox.dal.ModuloConexao;
+import javax.swing.JOptionPane;
+//a linha abaixo importa recursos da biblioteca rs2xml.jar
+import net.proteanit.sql.DbUtils;
+
 /**
  *
  * @author Thiago
  */
 public class TelaCliente extends javax.swing.JInternalFrame {
 
+    Connection conexao = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+
     /**
      * Creates new form TelaCliente
      */
     public TelaCliente() {
         initComponents();
+        conexao = ModuloConexao.conector();
+    }
+
+    //Adicionar clientes
+    private void adicionar() {
+        //instrução sql responsável por adicionar no banco
+        String sql = "insert into tbclientes(nomecli,endcli,fonecli,emailcli) values(?,?,?,?)";
+        try {
+            //prepara a conexão com o banco
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, txtCliNome.getText());
+            pst.setString(2, txtCliEndereco.getText());
+            pst.setString(3, txtCliFone.getText());
+            pst.setString(4, txtCliEmail.getText());
+            //a linha abaixo atualiza a tabela tbclientes com os dados preenchidos no cadastro na TelaCliente
+            //a estrutura abaixo é usada para confirmar a inserção dos dados na tabela
+            //validação dos campos obrigatórios
+            if (txtCliNome.getText().isEmpty() || txtCliFone.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
+
+            } else {
+
+                int adicionado = pst.executeUpdate();//se estiver tudo preenchido, será adicionado uma linha na tabela, entao o valor de adicionado será = 1
+
+                //a linha abaixo serve de apoio ao entendimento da logica, o valor se refere a linha adicionado na tabela(validação de dados)
+                //System.out.println(adicionado);
+                if (adicionado > 0) {
+                    JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso!");
+                    txtCliNome.setText(null);
+                    txtCliEndereco.setText(null);
+                    txtCliFone.setText(null);
+                    txtCliEmail.setText(null);
+
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+
+        }
+
+    }
+
+    //pesquisa nome dos clientes com filtro
+    private void pesquisarCliente() {
+        String sql = "select * from tbclientes where nomecli like?";//pesquisa o cliente pela letra digitada
+        try {
+            pst = conexao.prepareStatement(sql);
+            //passando o conteúdo da caixa de pesquisa para o '?'
+            //atenção ao "%" que é a continuação da String sql(do comando de cima)
+            pst.setString(1, txtCliPesquisar.getText() + "%");
+            rs=pst.executeQuery();
+            // a linha abaixo usa a biblioteca rs2xml.jar para preencher a tabela
+            tblClientes.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "");
+        }
+    }
+
+    private void alterar() {
+        String sql = "update tbclientes set endcli=?,fonecli=?,emailcli=? where nomecli=?";
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(2, txtCliEndereco.getText());
+            pst.setString(3, txtCliFone.getText());
+            pst.setString(4, txtCliEmail.getText());
+            pst.setString(5, txtCliNome.getText());
+            if (txtCliNome.getText().isEmpty() || txtCliFone.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
+
+            } else {
+                int adicionado = pst.executeUpdate();
+                if (adicionado > 0) {
+                    JOptionPane.showMessageDialog(null, "Dados do usuário alterados com sucesso!");
+                    txtCliNome.setText(null);
+                    txtCliEndereco.setText(null);
+                    txtCliEmail.setText(null);
+                    txtCliNome.setText(null);
+
+                }
+
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
     }
 
     /**
@@ -44,6 +139,9 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
         setTitle("Clientes");
         setPreferredSize(new java.awt.Dimension(640, 480));
 
@@ -66,6 +164,12 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
         btnRemover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/delete.png"))); // NOI18N
         btnRemover.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        txtCliPesquisar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCliPesquisarKeyReleased(evt);
+            }
+        });
 
         jLabel1.setText("* Campos obrigatórios");
 
@@ -186,12 +290,19 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        // TODO add your handling code here:
+        adicionar();
+
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void txtCliEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCliEmailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCliEmailActionPerformed
+
+        // O evento abaixo é do tipo "enquanto for digitando"
+    private void txtCliPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCliPesquisarKeyReleased
+        pesquisarCliente();
+        
+    }//GEN-LAST:event_txtCliPesquisarKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
