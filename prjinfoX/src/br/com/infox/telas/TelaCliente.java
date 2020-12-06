@@ -83,6 +83,15 @@ public class TelaCliente extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "");
         }
     }
+    //método para setar os campos do formulário quando você seleciona um cadastro nos resultados da tabela
+    private void setarCampos(){
+        int setar = tblClientes.getSelectedRow();//pega a linha que está selecionada na tabela clientes(resultados da pesquisa)
+        txtCliNome.setText(tblClientes.getModel().getValueAt(setar, 1).toString());//campo 1 é o nome no resultado da tabela de pesquisa
+        txtCliEndereco.setText(tblClientes.getModel().getValueAt(setar,2).toString()); 
+        txtCliFone.setText(tblClientes.getModel().getValueAt(setar,3).toString());
+        txtCliEmail.setText(tblClientes.getModel().getValueAt(setar,4).toString());
+    
+    }
 
     private void alterar() {
         String sql = "update tbclientes set endcli=?,fonecli=?,emailcli=? where nomecli=?";
@@ -200,6 +209,11 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblClientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblClientes);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -303,6 +317,10 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         pesquisarCliente();
         
     }//GEN-LAST:event_txtCliPesquisarKeyReleased
+    //Método usado para setar os campos da tabela (clicando com o mouse)
+    private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
+        setarCampos();
+    }//GEN-LAST:event_tblClientesMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
