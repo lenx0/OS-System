@@ -74,12 +74,20 @@ public class TelaLogin extends javax.swing.JFrame {
         conexao = ModuloConexao.conector();
         if (conexao != null) {
             lblStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/dbok.png")));
+            auto();
         } else {
             lblStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/infox/icones/dberror.png")));
         }
 
         //a linha abaixo serve de apoio ao estatus da conexão, mas não podemos exibir essa msg assim para o usuário
         //System.out.println(conexao);
+    }
+
+    public void auto() {
+     
+        txtUsuario.setText("admin");
+        txtSenha.setText("admin");
+        
     }
 
     /**
@@ -97,6 +105,7 @@ public class TelaLogin extends javax.swing.JFrame {
         btnLogin = new javax.swing.JButton();
         txtSenha = new javax.swing.JPasswordField();
         lblStatus = new javax.swing.JLabel();
+        rbtLembrar = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("X System - Login");
@@ -125,6 +134,8 @@ public class TelaLogin extends javax.swing.JFrame {
             }
         });
 
+        rbtLembrar.setText("Lembrar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -143,7 +154,10 @@ public class TelaLogin extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(rbtLembrar)
+                                .addGap(6, 6, 6)
+                                .addComponent(btnLogin)))))
                 .addContainerGap(68, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -160,7 +174,8 @@ public class TelaLogin extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLogin)
-                    .addComponent(lblStatus))
+                    .addComponent(lblStatus)
+                    .addComponent(rbtLembrar))
                 .addContainerGap(49, Short.MAX_VALUE))
         );
 
@@ -221,6 +236,7 @@ public class TelaLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lblStatus;
+    private javax.swing.JRadioButton rbtLembrar;
     private javax.swing.JPasswordField txtSenha;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables

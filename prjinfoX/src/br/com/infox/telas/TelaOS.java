@@ -19,6 +19,8 @@ public class TelaOS extends javax.swing.JInternalFrame {
     Connection conexao = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
+    //a linha abaixo cria uma variável para armazenar um texto de acordo com o radio button selecionado(orçamento ordem de serviço)
+    private String tipo;
 
     /**
      * Creates new form TelaOS
@@ -68,10 +70,10 @@ public class TelaOS extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         txtOsN = new javax.swing.JTextField();
         txtOsD = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        rbtOrc = new javax.swing.JRadioButton();
+        rbtOs = new javax.swing.JRadioButton();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cboOsSit = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         txtOsCli = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -102,6 +104,23 @@ public class TelaOS extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setTitle("OS");
         setPreferredSize(new java.awt.Dimension(640, 480));
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -113,16 +132,21 @@ public class TelaOS extends javax.swing.JInternalFrame {
 
         txtOsD.setEditable(false);
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setText("Orçamento");
-        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(rbtOrc);
+        rbtOrc.setText("Orçamento");
+        rbtOrc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
+                rbtOrcActionPerformed(evt);
             }
         });
 
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("Ordem de Serviço");
+        buttonGroup1.add(rbtOs);
+        rbtOs.setText("Ordem de Serviço");
+        rbtOs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtOsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -132,9 +156,9 @@ public class TelaOS extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
+                        .addComponent(rbtOrc)
                         .addGap(18, 18, 18)
-                        .addComponent(jRadioButton2)
+                        .addComponent(rbtOs)
                         .addGap(0, 12, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,17 +185,17 @@ public class TelaOS extends javax.swing.JInternalFrame {
                     .addComponent(txtOsD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton1))
+                    .addComponent(rbtOs)
+                    .addComponent(rbtOrc))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jLabel3.setText("Situação");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Entrega OK", "Orçamento REPROVADO", "Aguardando Aprovação", "Aguardando peças", "Abandonado pelo cliente", "Na bancada", "Retornou" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        cboOsSit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Na bancada", "Entrega OK", "Orçamento REPROVADO", "Aguardando Aprovação", "Aguardando peças", "Abandonado pelo cliente", "Retornou" }));
+        cboOsSit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                cboOsSitActionPerformed(evt);
             }
         });
 
@@ -323,7 +347,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(cboOsSit, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -372,7 +396,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jComboBox1))))
+                            .addComponent(cboOsSit))))
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -407,9 +431,10 @@ public class TelaOS extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
+    private void rbtOrcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtOrcActionPerformed
+        // atribuindo um texto a variável tipo se selecionado
+        tipo = "Orçamento";
+    }//GEN-LAST:event_rbtOrcActionPerformed
 
     private void txtOsCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOsCliActionPerformed
         // TODO add your handling code here:
@@ -419,9 +444,9 @@ public class TelaOS extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtOsIdActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void cboOsSitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboOsSitActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_cboOsSitActionPerformed
 
     private void btnOsPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsPesquisaActionPerformed
         // TODO add your handling code here:
@@ -463,6 +488,19 @@ public class TelaOS extends javax.swing.JInternalFrame {
         txtOsTec.setText(null);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void rbtOsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtOsActionPerformed
+        // a linha abaixo atribui um texto a variável tipo se o radio button estiver selecionado
+        tipo = "OS";
+        
+    }//GEN-LAST:event_rbtOsActionPerformed
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        //ao abrir o form marcar o radio button orçamento!! ATENÇÃO, QUANDO INICAR A TELA OS, O RADIO BUTTON ORÇAMENTO ESTARÁ SELECIONADO AUTOMATICAMENTE
+        rbtOrc.setSelected(true);
+        tipo = "Orçamento";
+        
+    }//GEN-LAST:event_formInternalFrameOpened
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOsAdiciona;
@@ -471,9 +509,9 @@ public class TelaOS extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnOsImprimi;
     private javax.swing.JButton btnOsPesquisa;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JComboBox<String> cboOsSit;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -486,9 +524,9 @@ public class TelaOS extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton rbtOrc;
+    private javax.swing.JRadioButton rbtOs;
     private javax.swing.JTable tblOs;
     private javax.swing.JTextField txtOsCli;
     private javax.swing.JTextField txtOsD;
