@@ -443,6 +443,9 @@
           <Image iconType="3" name="/br/com/infox/icones/update.png"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOsEditaActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnOsApaga">
       <Properties>
