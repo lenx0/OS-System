@@ -179,8 +179,6 @@ public class TelaOS extends javax.swing.JInternalFrame {
                     btnOsAdiciona.setEnabled(true);
                     txtOsCli.setEnabled(true);
                     tblOs.setVisible(true);//tabela é sempre visible
-                    
-                    
 
                 }
 
@@ -188,6 +186,44 @@ public class TelaOS extends javax.swing.JInternalFrame {
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
+
+        }
+
+    }
+
+    private void excluirOs() {
+        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esta OS?", "Atenção", JOptionPane.YES_NO_OPTION);
+
+        if (confirma == JOptionPane.YES_OPTION) {
+            String sql = "delete from tbos where os=?";
+            try {
+                pst = conexao.prepareStatement(sql);
+                pst.setString(1, txtOsN.getText());
+                int apagado = pst.executeUpdate();
+                if (apagado > 0) {
+                    JOptionPane.showMessageDialog(null, "OS excluída com sucesso!");
+                    txtOsN.setText(null);
+                    txtOsD.setText(null);
+                    txtCliId.setText(null);
+                    txtOsEquip.setText(null);
+                    txtOsDef.setText(null);
+                    txtOsServ.setText(null);
+                    txtOsTec.setText(null);
+                    txtOsTec.setText(null);
+                    txtOsValor.setText(null);
+                    //habilitar os objetos novamente
+                    btnOsAdiciona.setEnabled(true);
+                    txtOsCli.setEnabled(true);
+                    tblOs.setVisible(true);//tabela é sempre visible
+
+                } else {
+                }
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+
+        } else {
 
         }
 
@@ -576,7 +612,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnOsPesquisaActionPerformed
 
     private void btnOsApagaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsApagaActionPerformed
-        // TODO add your handling code here:
+        excluirOs();
     }//GEN-LAST:event_btnOsApagaActionPerformed
 
     private void btnOsAdicionaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAdicionaActionPerformed
